@@ -175,6 +175,47 @@ RSpec.describe TTY::Sparkline, "#render" do
     expect(sparkline.render).to eq("▅▆▇█")
   end
 
+  context "with block" do
+    it "renders one row high chart yielding value, bar, column and row" do
+      sparkline = TTY::Sparkline.new(data: (1..8))
+      yielded = []
+
+      rendered = sparkline.render do |val, bar, col, row|
+        yielded << [val, bar, col, row]
+        "#{bar}|"
+      end
+
+      expect(yielded).to eq([
+        [1, "▁", 0, 0], [2, "▂", 1, 0], [3, "▃", 2, 0], [4, "▄", 3, 0],
+        [5, "▅", 4, 0], [6, "▆", 5, 0], [7, "▇", 6, 0], [8, "█", 7, 0]
+      ])
+
+      expect(rendered).to eq("▁|▂|▃|▄|▅|▆|▇|█|")
+    end
+
+    it "renders 3 rows high chart yielding value, bar, column and row" do
+      sparkline = TTY::Sparkline.new(data: (1..4), height: 3)
+      yielded = []
+
+      rendered = sparkline.render do |val, bar, col, row|
+        yielded << [val, bar, col, row]
+        "#{bar}|"
+      end
+
+      expect(yielded).to eq([
+        [1, " ", 0, 0], [2, " ", 1, 0], [3, " ", 2, 0], [4, "▆", 3, 0],
+        [1, " ", 0, 1], [2, " ", 1, 1], [3, "▇", 2, 1], [4, "█", 3, 1],
+        [1, "▁", 0, 2], [2, "█", 1, 2], [3, "█", 2, 2], [4, "█", 3, 2]
+      ])
+
+      expect(rendered).to eq([
+        " | | |▆|",
+        " | |▇|█|",
+        "▁|█|█|█|"
+      ].join("\n"))
+    end
+  end
+
   context "with height" do
     it "renders chart with height set to 2 rows" do
       sparkline = TTY::Sparkline.new(data: (1..8), height: 2)

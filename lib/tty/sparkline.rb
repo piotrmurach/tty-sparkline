@@ -170,9 +170,11 @@ module TTY
 
       height.times do |y|
         buffer << position(y) if position?
-        @data[data_range].each do |value|
+        @data[data_range].each.with_index do |value, x|
           bar_index = clamp_and_scale(value, calc_min, calc_max)
-          buffer << convert_to_bar(bar_index, height - 1 - y)
+          bar = convert_to_bar(bar_index, height - 1 - y)
+          bar = yield(value, bar, x, y) if block_given?
+          buffer << bar
         end
         buffer << NEWLINE unless y == height - 1
       end
