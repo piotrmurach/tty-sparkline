@@ -68,8 +68,27 @@ RSpec.describe TTY::Sparkline, "#render" do
   end
 
   it "renders non-numeric values as empty spaces" do
-    sparkline = TTY::Sparkline.new(data: [1, 2.4, 3.1, nil, 5.3, 6, "", 8])
-    expect(sparkline.render).to eq("▁▂▃ ▅▆ █")
+    sparkline = TTY::Sparkline.new(data: [1, 2.4, "foo", 3.1, nil, 5.3, 6, "", 8])
+    expect(sparkline.render).to eq("▁▂ ▃ ▅▆ █")
+  end
+
+  it "renders only numeric values" do
+    sparkline = TTY::Sparkline.new(data: [1, 2.4, "foo", 3.1, nil, 5.3, 6, "", 8],
+                                   non_numeric: :ignore)
+    expect(sparkline.render).to eq("▁▂▃▅▆█")
+  end
+
+  it "renders non-numeric values as the smallest bar" do
+    sparkline = TTY::Sparkline.new(data: [1, 2.4, "foo", 3.1, nil, 5.3, 6, "", 8],
+                                   non_numeric: :minimum)
+    expect(sparkline.render).to eq("▁▂▁▃▁▅▆▁█")
+  end
+
+  it "raises when non_numeric option has invalid value" do
+    expect {
+      TTY::Sparkline.new(non_numeric: :unknown)
+    }.to raise_error(TTY::Sparkline::Error,
+                     "unknown non_numeric value: :unknown")
   end
 
   it "renders negative numbers in proportion to the remaining" do

@@ -54,6 +54,7 @@ Or install it yourself as:
   * [3.6 :max](#36-max)
   * [3.7 :bars](#37-bars)
   * [3.8 :buffer_size](#38-buffer_size)
+  * [3.9 :non_numeric](#39-non_numeric)
 
 ## 1. Usage
 
@@ -408,6 +409,61 @@ Will cause the render to truncate the output:
 sparkline.render
 # => "▄▅▆▇█"
 ````
+
+### 3.9 `:non_numeric`
+
+To instruct a sparkline on how to deal with non-numeric data use the `:non_numeric` keyword.
+
+Below are the possible values:
+
+* `:empty` - shows empty spaces (default)
+* `:ignore` - skips displaying anything
+* `:minimum` - shows the smallest bar
+
+Given data with some non-numeric values like `"foo"`, `nil` and `""`:
+
+```ruby
+data = [1, 2, "foo", 4, nil, 6, "", 8]
+```
+
+When you don't specify the `:non_numeric` keyword, it will be set to `:empty` by default:
+
+```ruby
+sparkline = TTY::Sparkline.new(data: data)
+```
+
+This will then display any non-numeric values as empty spaces:
+
+```ruby
+sparkline.render
+# => "▁▂ ▄ ▆ █"
+```
+
+If you want to ignore displaying any non-numeric values use `:ignore`:
+
+```ruby
+sparkline = TTY::Sparkline.new(data: data, non_numeric: :ignore)
+```
+
+When rendered, this will result in:
+
+```ruby
+sparkline.render
+# => "▁▂▄▆█"
+````
+
+You can also convert any non-numeric values to the smallest bar with `:minimum`:
+
+```ruby
+sparkline = TTY::Sparkline.new(data: data, non_numeric: :minimum)
+```
+
+This will render the following:
+
+```ruby
+sparkline.render
+# => "▁▂▁▄▁▆▁█"
+```
 
 ## Development
 

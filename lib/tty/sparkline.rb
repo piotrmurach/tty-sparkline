@@ -19,6 +19,8 @@ module TTY
 
     NEWLINE = "\n"
 
+    NON_NUMERIC_CONVERSIONS = %i[empty ignore minimum].freeze
+
     SPACE = " "
 
     # The top position
@@ -90,10 +92,16 @@ module TTY
     #   the bars used for display
     # @param [Integer] buffer_size
     #   the maximum buffer size
+    # @param [Symbol] non_numeric
+    #   the replacement for a non-numeric value
     #
     # @api public
     def initialize(data: [], top: nil, left: nil, height: 1, width: nil,
-                   min: nil, max: nil, bars: BARS, buffer_size: MAX_BUFFER_SIZE)
+                   min: nil, max: nil, bars: BARS, buffer_size: MAX_BUFFER_SIZE,
+                   non_numeric: :empty)
+      check_minmax(min, max) if min && max
+      check_non_numeric(non_numeric)
+
       @data = Array(data)
       @cached_data_size = @data.size
       @top = top
@@ -105,10 +113,9 @@ module TTY
       @bars = bars
       @num_of_bars = bars.size
       @buffer_size = buffer_size
+      @non_numeric = non_numeric
       @filter = ->(value) { value.is_a?(::Numeric) }
       @cursor = TTY::Cursor
-
-      check_minmax(min, max) if min && max
     end
 
     # Append value(s)
@@ -210,6 +217,20 @@ module TTY
       raise Error, "maximum value cannot be less than minimum"
     end
 
+    # Check whether non_numeric has a valid conversion type
+    #
+    # @param [Symbol] type
+    #   the type of conversion
+    #
+    # @raise [Error]
+    #
+    # @api private
+    def check_non_numeric(type)
+      return if NON_NUMERIC_CONVERSIONS.include?(type)
+
+      raise Error, "unknown non_numeric value: #{type.inspect}"
+    end
+
     # Check whether or not to position this chart
     #
     # @return [Boolean]
@@ -280,13 +301,29 @@ module TTY
     #
     # @api private
     def convert_to_bar(bar_index, offset)
-      return SPACE unless bar_index.is_a?(Numeric)
+      return convert_non_numeric unless bar_index.is_a?(Numeric)
 
       if bar_index >= offset * @num_of_bars
         bar_index -= offset * @num_of_bars
         @bars[bar_index >= @num_of_bars ? -1 : bar_index]
       else
         SPACE
+      end
+    end
+
+    # Convert non-numeric value into display string
+    #
+    # @return [String]
+    #
+    # @api private
+    def convert_non_numeric
+      case @non_numeric
+      when :empty
+        SPACE
+      when :ignore
+        EMPTY
+      when :minimum
+        @bars[0]
       end
     end
   end # Sparkline
