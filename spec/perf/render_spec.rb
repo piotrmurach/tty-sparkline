@@ -18,19 +18,19 @@ RSpec.describe TTY::Sparkline, "#render" do
     }.at_most(3).times
   end
 
-  it "renders a single row chart allocating no more than 12 objects" do
+  it "renders a single row chart allocating no more than 13 objects" do
     data = (1..100)
     expect {
       sparkline = TTY::Sparkline.new(data: data)
       sparkline.render
-    }.to perform_allocation(12).objects
+    }.to perform_allocation(13).objects
   end
 
-  it "renders 5 rows high chart allocating no more than 24 objects" do
+  it "renders 5 rows high chart allocating no more than 25 objects" do
     data = (1..100)
     expect {
       sparkline = TTY::Sparkline.new(data: data, height: 5)
       sparkline.render
-    }.to perform_allocation(24).objects
+    }.to perform_allocation(25).objects
   end
 end

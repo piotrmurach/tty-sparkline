@@ -102,7 +102,7 @@ module TTY
       check_minmax(min, max) if min && max
       check_non_numeric(non_numeric)
 
-      @data = Array(data)
+      @data = Array(data).dup
       @cached_data_size = @data.size
       @top = top
       @left = left

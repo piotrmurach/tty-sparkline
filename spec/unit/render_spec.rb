@@ -182,11 +182,29 @@ RSpec.describe TTY::Sparkline, "#render" do
     expect(sparkline.render).to eq("▁▂▃▄▅▆▇█")
   end
 
+  it "appends numbers without changing the original data" do
+    data = [1, 2, 3, 4]
+    sparkline = TTY::Sparkline.new(data: data)
+    sparkline << 5 << 6
+    expect(data).to eq([1, 2, 3, 4])
+    expect(sparkline.size).to eq(6)
+    expect(sparkline.render).to eq("▁▂▃▅▆█")
+  end
+
   it "appends without overflowing maximum buffer size" do
     sparkline = TTY::Sparkline.new(buffer_size: 5, min: 0)
     sparkline.push(*(1..8).to_a)
     expect(sparkline.size).to eq(5)
     expect(sparkline.render).to eq("▄▅▆▇█")
+  end
+
+  it "appends numbers within buffer size without changing original data" do
+    data = [1, 2, 3, 4]
+    sparkline = TTY::Sparkline.new(data: data, buffer_size: 5, min: 0)
+    sparkline.push(5, 6)
+    expect(data).to eq([1, 2, 3, 4])
+    expect(sparkline.size).to eq(5)
+    expect(sparkline.render).to eq("▃▄▅▆█")
   end
 
   it "renders up to the maximum width" do
