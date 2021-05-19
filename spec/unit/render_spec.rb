@@ -7,79 +7,79 @@ RSpec.describe TTY::Sparkline, "#render" do
   end
 
   it "renders full bar for an array with a single positive number" do
-    sparkline = TTY::Sparkline.new(data: [5])
+    sparkline = TTY::Sparkline.new([5])
     expect(sparkline.render).to eq("█")
   end
 
   it "renders full bar for an array with a single near zero number" do
-    sparkline = TTY::Sparkline.new(data: [1e-10])
+    sparkline = TTY::Sparkline.new([1e-10])
     expect(sparkline.render).to eq("█")
   end
 
   it "renders full bar for an array with a single negative number" do
-    sparkline = TTY::Sparkline.new(data: [-5])
+    sparkline = TTY::Sparkline.new([-5])
     expect(sparkline.render).to eq("█")
   end
 
   it "renders an array of zeros as smallest bars" do
-    sparkline = TTY::Sparkline.new(data: [0, 0, 0])
+    sparkline = TTY::Sparkline.new([0, 0, 0])
     expect(sparkline.render).to eq("▁▁▁")
   end
 
   it "renders an array of identical numbers as full bars" do
-    sparkline = TTY::Sparkline.new(data: [10, 10, 10])
+    sparkline = TTY::Sparkline.new([10, 10, 10])
     expect(sparkline.render).to eq("███")
   end
 
   it "renders an increasing range of integers matching all bars" do
-    sparkline = TTY::Sparkline.new(data: (1..8))
+    sparkline = TTY::Sparkline.new(1..8)
     expect(sparkline.render).to eq("▁▂▃▄▅▆▇█")
   end
 
   it "renders a decreasing range of integers matching all bars" do
-    sparkline = TTY::Sparkline.new(data: (1..8).to_a.reverse)
+    sparkline = TTY::Sparkline.new((1..8).to_a.reverse)
     expect(sparkline.render).to eq("█▇▆▅▄▃▂▁")
   end
 
   it "renders an increasing range of negative integers matching all bars" do
-    sparkline = TTY::Sparkline.new(data: (-8..-1))
+    sparkline = TTY::Sparkline.new(-8..-1)
     expect(sparkline.render).to eq("▁▂▃▄▅▆▇█")
   end
 
   it "renders a decreasing range of negative integers matching all bars" do
-    sparkline = TTY::Sparkline.new(data: (-8..-1).to_a.reverse)
+    sparkline = TTY::Sparkline.new((-8..-1).to_a.reverse)
     expect(sparkline.render).to eq("█▇▆▅▄▃▂▁")
   end
 
   it "renders an increasing range of integers exceeding available bars" do
-    sparkline = TTY::Sparkline.new(data: (1..20))
+    sparkline = TTY::Sparkline.new(1..20)
     expect(sparkline.render).to eq("▁▁▁▂▂▂▃▃▃▄▄▅▅▅▆▆▆▇▇█")
   end
 
   it "renders a range of integers increasing by the same step amount" do
-    sparkline = TTY::Sparkline.new(data: (10..45).step(5))
+    sparkline = TTY::Sparkline.new((10..45).step(5))
     expect(sparkline.render).to eq("▁▂▃▄▅▆▇█")
   end
 
   it "renders identical bars for number ranges differing only in scale" do
-    sparkline = TTY::Sparkline.new(data: (10..45).step(5))
-    sparkline2 = TTY::Sparkline.new(data: (100..450).step(50))
+    sparkline = TTY::Sparkline.new((10..45).step(5))
+    sparkline2 = TTY::Sparkline.new((100..450).step(50))
     expect(sparkline.render).to eq(sparkline2.render)
   end
 
   it "renders non-numeric values as empty spaces" do
-    sparkline = TTY::Sparkline.new(data: [1, 2.4, "foo", 3.1, nil, 5.3, 6, "", 8])
+    sparkline = TTY::Sparkline.new([1, 2.4, "foo", 3.1, nil, 5.3, 6, "", 8])
     expect(sparkline.render).to eq("▁▂ ▃ ▅▆ █")
   end
 
   it "renders only numeric values" do
-    sparkline = TTY::Sparkline.new(data: [1, 2.4, "foo", 3.1, nil, 5.3, 6, "", 8],
+    sparkline = TTY::Sparkline.new([1, 2.4, "foo", 3.1, nil, 5.3, 6, "", 8],
                                    non_numeric: :ignore)
     expect(sparkline.render).to eq("▁▂▃▅▆█")
   end
 
   it "renders non-numeric values as the smallest bar" do
-    sparkline = TTY::Sparkline.new(data: [1, 2.4, "foo", 3.1, nil, 5.3, 6, "", 8],
+    sparkline = TTY::Sparkline.new([1, 2.4, "foo", 3.1, nil, 5.3, 6, "", 8],
                                    non_numeric: :minimum)
     expect(sparkline.render).to eq("▁▂▁▃▁▅▆▁█")
   end
@@ -92,61 +92,61 @@ RSpec.describe TTY::Sparkline, "#render" do
   end
 
   it "renders negative numbers in proportion to the remaining" do
-    sparkline = TTY::Sparkline.new(data: [-50, -100, 0, 100, 50, 0, -200, 10])
+    sparkline = TTY::Sparkline.new([-50, -100, 0, 100, 50, 0, -200, 10])
     expect(sparkline.render).to eq("▄▃▅█▆▅▁▅")
   end
 
   it "scales bars against a custom minimum value less than any value" do
-    sparkline = TTY::Sparkline.new(data: (1..8), min: -5)
+    sparkline = TTY::Sparkline.new(1..8, min: -5)
     expect(sparkline.render).to eq("▄▄▅▅▆▆▇█")
   end
 
   it "scales bars against a custom minimum value above the lowest value" do
-    sparkline = TTY::Sparkline.new(data: (1..8), min: 5)
+    sparkline = TTY::Sparkline.new(1..8, min: 5)
     expect(sparkline.render).to eq("▁▁▁▁▁▃▅█")
   end
 
   it "scales bars below minimum value as if they are minimum value" do
-    sparkline = TTY::Sparkline.new(data: (1..8), min: 5)
-    sparkline2 = TTY::Sparkline.new(data: [5, 5, 5, 5, 5, 6, 7, 8], min: 5)
+    sparkline = TTY::Sparkline.new(1..8, min: 5)
+    sparkline2 = TTY::Sparkline.new([5, 5, 5, 5, 5, 6, 7, 8], min: 5)
     expect(sparkline.render).to eq(sparkline2.render)
   end
 
   it "scales bars against a custom maximum value above any value" do
-    sparkline = TTY::Sparkline.new(data: (1..8), max: 20)
+    sparkline = TTY::Sparkline.new(1..8, max: 20)
     expect(sparkline.render).to eq("▁▁▁▂▂▂▃▃")
   end
 
   it "scales bars against a custom maximum value lower than the maximum" do
-    sparkline = TTY::Sparkline.new(data: (1..8), max: 5)
+    sparkline = TTY::Sparkline.new(1..8, max: 5)
     expect(sparkline.render).to eq("▁▂▄▆████")
   end
 
   it "scales bars above maximum value as if they are maximum value" do
-    sparkline = TTY::Sparkline.new(data: (1..8), max: 5)
-    sparkline2 = TTY::Sparkline.new(data: [1, 2, 3, 4, 5, 5, 5, 5], max: 5)
+    sparkline = TTY::Sparkline.new(1..8, max: 5)
+    sparkline2 = TTY::Sparkline.new([1, 2, 3, 4, 5, 5, 5, 5], max: 5)
     expect(sparkline.render).to eq(sparkline2.render)
   end
 
   it "scales bars against a custom minimum and maximum value" do
-    sparkline = TTY::Sparkline.new(data: (1..8), min: 3, max: 6)
+    sparkline = TTY::Sparkline.new(1..8, min: 3, max: 6)
     expect(sparkline.render).to eq("▁▁▁▃▅███")
   end
 
   it "sets a custom minimum and maximum value when calling render" do
-    sparkline = TTY::Sparkline.new(data: (1..8))
+    sparkline = TTY::Sparkline.new(1..8)
     expect(sparkline.render(min: 3, max: 6)).to eq("▁▁▁▃▅███")
   end
 
   it "sets a custom minimum and maximum value with attributes" do
-    sparkline = TTY::Sparkline.new(data: (1..8))
+    sparkline = TTY::Sparkline.new(1..8)
     sparkline.min = 3
     sparkline.max = 6
     expect(sparkline.render).to eq("▁▁▁▃▅███")
   end
 
   it "renders full bars when maximum and minimum are the same" do
-    sparkline = TTY::Sparkline.new(data: (1..8), min: 5, max: 5)
+    sparkline = TTY::Sparkline.new(1..8, min: 5, max: 5)
     expect(sparkline.render).to eq("████████")
   end
 
@@ -158,7 +158,7 @@ RSpec.describe TTY::Sparkline, "#render" do
   end
 
   it "raises when maximum value is lower than minimum when rendering" do
-    sparkline = TTY::Sparkline.new(data: (1..8))
+    sparkline = TTY::Sparkline.new(1..8)
     expect {
       sparkline.render(min: 1, max: 0)
     }.to raise_error(TTY::Sparkline::Error,
@@ -166,7 +166,7 @@ RSpec.describe TTY::Sparkline, "#render" do
   end
 
   it "renders an increasing range of integers with custom bars" do
-    sparkline = TTY::Sparkline.new(data: (1..8), bars: %w[_ - = ^])
+    sparkline = TTY::Sparkline.new(1..8, bars: %w[_ - = ^])
     expect(sparkline.render).to eq("___--==^")
   end
 
@@ -184,7 +184,7 @@ RSpec.describe TTY::Sparkline, "#render" do
 
   it "appends numbers without changing the original data" do
     data = [1, 2, 3, 4]
-    sparkline = TTY::Sparkline.new(data: data)
+    sparkline = TTY::Sparkline.new(data)
     sparkline << 5 << 6
     expect(data).to eq([1, 2, 3, 4])
     expect(sparkline.size).to eq(6)
@@ -200,7 +200,7 @@ RSpec.describe TTY::Sparkline, "#render" do
 
   it "appends numbers within buffer size without changing original data" do
     data = [1, 2, 3, 4]
-    sparkline = TTY::Sparkline.new(data: data, buffer_size: 5, min: 0)
+    sparkline = TTY::Sparkline.new(data, buffer_size: 5, min: 0)
     sparkline.push(5, 6)
     expect(data).to eq([1, 2, 3, 4])
     expect(sparkline.size).to eq(5)
@@ -208,13 +208,13 @@ RSpec.describe TTY::Sparkline, "#render" do
   end
 
   it "renders up to the maximum width" do
-    sparkline = TTY::Sparkline.new(data: (1..8), width: 4)
+    sparkline = TTY::Sparkline.new(1..8, width: 4)
     expect(sparkline.render).to eq("▅▆▇█")
   end
 
   context "with block" do
     it "renders one row high chart yielding value, bar, column and row" do
-      sparkline = TTY::Sparkline.new(data: (1..8))
+      sparkline = TTY::Sparkline.new(1..8)
       yielded = []
 
       rendered = sparkline.render do |val, bar, col, row|
@@ -231,7 +231,7 @@ RSpec.describe TTY::Sparkline, "#render" do
     end
 
     it "renders 3 rows high chart yielding value, bar, column and row" do
-      sparkline = TTY::Sparkline.new(data: (1..4), height: 3)
+      sparkline = TTY::Sparkline.new(1..4, height: 3)
       yielded = []
 
       rendered = sparkline.render do |val, bar, col, row|
@@ -255,7 +255,7 @@ RSpec.describe TTY::Sparkline, "#render" do
 
   context "with height" do
     it "renders chart with height set to 2 rows" do
-      sparkline = TTY::Sparkline.new(data: (1..8), height: 2)
+      sparkline = TTY::Sparkline.new(1..8, height: 2)
       expect(sparkline.render).to eq([
         "    ▁▃▅▇",
         "▁▃▅▇████"
@@ -263,7 +263,7 @@ RSpec.describe TTY::Sparkline, "#render" do
     end
 
     it "renders chart with height set to 5 rows" do
-      sparkline = TTY::Sparkline.new(data: (1..8), height: 5)
+      sparkline = TTY::Sparkline.new(1..8, height: 5)
       expect(sparkline.render).to eq([
         "       ▄",
         "     ▂▇█",
@@ -274,7 +274,7 @@ RSpec.describe TTY::Sparkline, "#render" do
     end
 
     it "renders chart with height set to 3 rows and width set to 4 columns" do
-      sparkline = TTY::Sparkline.new(data: (1..8), height: 3, width: 4)
+      sparkline = TTY::Sparkline.new(1..8, height: 3, width: 4)
       expect(sparkline.render).to eq([
         "  ▃▆",
         "▅███",
@@ -285,12 +285,12 @@ RSpec.describe TTY::Sparkline, "#render" do
 
   context "with position" do
     it "renders chart with the left position set to 5 columns" do
-      sparkline = TTY::Sparkline.new(data: (1..8), left: 5)
+      sparkline = TTY::Sparkline.new(1..8, left: 5)
       expect(sparkline.render).to eq("\e[5G▁▂▃▄▅▆▇█")
     end
 
     it "renders 3 rows high chart with the left position set to 5 columns" do
-      sparkline = TTY::Sparkline.new(data: (1..8), left: 5, height: 3)
+      sparkline = TTY::Sparkline.new(1..8, left: 5, height: 3)
       expect(sparkline.render).to eq([
         "\e[5G      ▃▆",
         "\e[5G   ▂▅███",
@@ -299,12 +299,12 @@ RSpec.describe TTY::Sparkline, "#render" do
     end
 
     it "renders chart with top position set to 2 rows" do
-      sparkline = TTY::Sparkline.new(data: (1..8), top: 2)
+      sparkline = TTY::Sparkline.new(1..8, top: 2)
       expect(sparkline.render).to eq("\e[2d▁▂▃▄▅▆▇█")
     end
 
     it "renders 3 rows high chart with the top position set to 2 rows" do
-      sparkline = TTY::Sparkline.new(data: (1..8), top: 2, height: 3)
+      sparkline = TTY::Sparkline.new(1..8, top: 2, height: 3)
       expect(sparkline.render).to eq([
         "\e[2d      ▃▆",
         "\e[3d   ▂▅███",
@@ -313,12 +313,12 @@ RSpec.describe TTY::Sparkline, "#render" do
     end
 
     it "renders chart with the top set to 2 rows and left to 5 columns" do
-      sparkline = TTY::Sparkline.new(data: (1..8), top: 2, left: 5)
+      sparkline = TTY::Sparkline.new(1..8, top: 2, left: 5)
       expect(sparkline.render).to eq("\e[3;6H▁▂▃▄▅▆▇█")
     end
 
     it "renders 3 rows high chart with the top and left position" do
-      sparkline = TTY::Sparkline.new(data: (1..8), top: 2, left: 5, height: 3)
+      sparkline = TTY::Sparkline.new(1..8, top: 2, left: 5, height: 3)
       expect(sparkline.render).to eq([
         "\e[3;6H      ▃▆",
         "\e[4;6H   ▂▅███",
@@ -327,8 +327,7 @@ RSpec.describe TTY::Sparkline, "#render" do
     end
 
     it "renders 3 rows by 4 columns chart with the top and left position" do
-      sparkline = TTY::Sparkline.new(data: (1..8), top: 2, left: 5,
-                                     height: 3, width: 4)
+      sparkline = TTY::Sparkline.new(1..8, top: 2, left: 5, height: 3, width: 4)
       expect(sparkline.render).to eq([
         "\e[3;6H  ▃▆",
         "\e[4;6H▅███",

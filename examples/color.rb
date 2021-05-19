@@ -9,7 +9,7 @@ data = Array.new(120) { rand(100) }
 min, max = data.minmax
 avg = data.sum.fdiv(data.size)
 
-sparkline = TTY::Sparkline.new(data: data, height: 6)
+sparkline = TTY::Sparkline.new(data, height: 6)
 
 chart = sparkline.render do |val, bar, col, row|
   if val == max

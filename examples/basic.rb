@@ -2,5 +2,5 @@
 
 require_relative "../lib/tty-sparkline"
 
-sparkline = TTY::Sparkline.new(data: (1..8))
+sparkline = TTY::Sparkline.new(1..8)
 puts sparkline.render

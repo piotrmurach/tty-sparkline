@@ -96,7 +96,7 @@ module TTY
     #   the replacement for a non-numeric value
     #
     # @api public
-    def initialize(data: [], top: nil, left: nil, height: 1, width: nil,
+    def initialize(data = [], top: nil, left: nil, height: 1, width: nil,
                    min: nil, max: nil, bars: BARS, buffer_size: MAX_BUFFER_SIZE,
                    non_numeric: :empty)
       check_minmax(min, max) if min && max

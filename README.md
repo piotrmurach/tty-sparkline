@@ -61,7 +61,7 @@ Or install it yourself as:
 To display a sparkline chart, first, create an instance with some data:
 
 ```ruby
-sparkline = TTY::Sparkline.new(data: (1..8))
+sparkline = TTY::Sparkline.new(1..8)
 ```
 
 Then invoke `render` to generate the chart:
@@ -86,19 +86,19 @@ This will result in the following output:
 A sparkline can be positioned anywhere within the terminal screen using [:top](#31-top) and [:left](#32-left) keywords:
 
 ```ruby
-sparkline = TTY::Sparkline.new(data: (1..8), top: 10, left: 50)
+sparkline = TTY::Sparkline.new(1..8, top: 10, left: 50)
 ```
 
 A sparkline can have custom size given by the [:height](#33-height) and [:width](#34-width) keywords:
 
 ```ruby
-sparkline = TTY::Sparkline.new(data: (1..8), height: 5, width: 100)
+sparkline = TTY::Sparkline.new(1..8, height: 5, width: 100)
 ```
 
 To restrict data values use [:min](#35-min) and [:max](#36-max):
 
 ```ruby
-sparkline = TTY::Sparkline.new(data: (1..8), min: 0, max: 5)
+sparkline = TTY::Sparkline.new(1..8, min: 0, max: 5)
 ```
 
 ## 2. Interface
@@ -114,8 +114,8 @@ sparkline = TTY::Sparkline.new
 If you have a static set of data items you can provide them during initialisation with the `:data` keyword that accepts both `Array` and `Range` types:
 
 ```ruby
-sparkline = TTY::Sparkline.new(data: (1..8))
-sparkline = TTY::Sparkline.new(data: [1, 2, 3, 4, 5, 6, 7, 8])
+sparkline = TTY::Sparkline.new(1..8)
+sparkline = TTY::Sparkline.new([1, 2, 3, 4, 5, 6, 7, 8])
 ```
 
 However, if you don't know data upfront you can [append](#22-append) it after instantiation:
@@ -169,7 +169,7 @@ end
 Once you have a sparkline instance with some data:
 
 ```ruby
-sparkline = TTY::Sparkline.new(data: (1..8))
+sparkline = TTY::Sparkline.new(1..8)
 ```
 
 To show the sparkline chart use the `render` method like so:
@@ -265,7 +265,7 @@ TTY::Sparkline.new(left: TTY::Screen.width / 2)
 By default, a sparkline will be rendered within a single terminal line. To change a chart to span more than one line use `:height` keyword. For example to display a sparkline on `3` lines do:
 
 ```ruby
-TTY::Sparkline.new(data: (1..8), height: 3)
+TTY::Sparkline.new(1..8, height: 3)
 ```
 
 Then rendering the sparkline in the console:
@@ -287,7 +287,7 @@ We would get the following output:
 By default, a sparkline will be rendered in as many terminal columns as there are data items. To restrict the chart to a limited number of columns use the `:width` keyword. For example, to display a sparkline up to a maximum of `5` columns do:
 
 ```ruby
-TTY::Sparkline.new(data: (1..8), width: 5)
+TTY::Sparkline.new(1..8, width: 5)
 ```
 
 Then by rendering the sparkline in the console:
@@ -305,7 +305,7 @@ We would generate the following limited output:
 This option can be combined with the [:height](#33-height):
 
 ```ruby
-TTY::Sparkline.new(data: (1..8), height: 3, width: 5)
+TTY::Sparkline.new(1..8, height: 3, width: 5)
 ```
 
 The result of rendering the above sparkline would be as follows:
@@ -321,7 +321,7 @@ The result of rendering the above sparkline would be as follows:
 By default, the minimum value will be calculated from the entire data set. For example, given the following data:
 
 ```ruby
-sparkline = TTY::Sparkline.new(data: [100, 75, 100, 50, 80])
+sparkline = TTY::Sparkline.new([100, 75, 100, 50, 80])
 ```
 
 When displayed in the console, you will see the following:
@@ -335,7 +335,7 @@ You will notice that the value of `50` looks like it's almost zero. This is beca
 To change this, you can provide a custom minimum value using the `:min` keyword:
 
 ```ruby
-sparkline = TTY::Sparkline.new(data: [100, 75, 100, 50, 80], min: 0)
+sparkline = TTY::Sparkline.new([100, 75, 100, 50, 80], min: 0)
 ```
 
 This time the display will show `50` as a more prominent value at the cost of making the difference between other values less striking:
@@ -349,7 +349,7 @@ This time the display will show `50` as a more prominent value at the cost of ma
 By default, the maximum value will be calculated from the entire data set. For example, given the following data:
 
 ```ruby
-sparkline = TTY::Sparkline.new(data: [100, 75, 300, 50, 80])
+sparkline = TTY::Sparkline.new([100, 75, 300, 50, 80])
 ```
 
 When displayed in the console, you will see the following:
@@ -363,7 +363,7 @@ You will notice that the value of `300` makes all the remaining numbers look lik
 To change this, you can provide a custom maximum value using the `:max` keyword:
 
 ```ruby
-sparkline = TTY::Sparkline.new(data: [100, 75, 300, 50, 80], max: 100)
+sparkline = TTY::Sparkline.new([100, 75, 300, 50, 80], max: 100)
 ```
 
 This time the display will limit values and reduce `300` to the height of `100` making all the remaining values more visible.
@@ -377,7 +377,7 @@ This time the display will limit values and reduce `300` to the height of `100` 
 There are eight bar types used to display values in a sparkline chart. These can be changed with the `:bars` keyword to a different set of characters:
 
 ```ruby
-sparkline = TTY::Sparkline.new(data: (1..8), bars: %w[_ - = ^])
+sparkline = TTY::Sparkline.new(1..8, bars: %w[_ - = ^])
 ```
 
 Then rendering the chart will output:
@@ -429,7 +429,7 @@ data = [1, 2, "foo", 4, nil, 6, "", 8]
 When you don't specify the `:non_numeric` keyword, it will be set to `:empty` by default:
 
 ```ruby
-sparkline = TTY::Sparkline.new(data: data)
+sparkline = TTY::Sparkline.new(data)
 ```
 
 This will then display any non-numeric values as empty spaces:
@@ -442,7 +442,7 @@ sparkline.render
 If you want to ignore displaying any non-numeric values use `:ignore`:
 
 ```ruby
-sparkline = TTY::Sparkline.new(data: data, non_numeric: :ignore)
+sparkline = TTY::Sparkline.new(data, non_numeric: :ignore)
 ```
 
 When rendered, this will result in:
@@ -455,7 +455,7 @@ sparkline.render
 You can also convert any non-numeric values to the smallest bar with `:minimum`:
 
 ```ruby
-sparkline = TTY::Sparkline.new(data: data, non_numeric: :minimum)
+sparkline = TTY::Sparkline.new(data, non_numeric: :minimum)
 ```
 
 This will render the following:

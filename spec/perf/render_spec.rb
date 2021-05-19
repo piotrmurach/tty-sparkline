@@ -9,7 +9,7 @@ RSpec.describe TTY::Sparkline, "#render" do
   it "renders data at most 3x slower than ERB template" do
     data = (1..100)
     template = ERB.new "Sparkline for <%= data %>"
-    sparkline = TTY::Sparkline.new(data: data)
+    sparkline = TTY::Sparkline.new(data)
 
     expect {
       sparkline.render
@@ -21,7 +21,7 @@ RSpec.describe TTY::Sparkline, "#render" do
   it "renders a single row chart allocating no more than 13 objects" do
     data = (1..100)
     expect {
-      sparkline = TTY::Sparkline.new(data: data)
+      sparkline = TTY::Sparkline.new(data)
       sparkline.render
     }.to perform_allocation(13).objects
   end
@@ -29,7 +29,7 @@ RSpec.describe TTY::Sparkline, "#render" do
   it "renders 5 rows high chart allocating no more than 25 objects" do
     data = (1..100)
     expect {
-      sparkline = TTY::Sparkline.new(data: data, height: 5)
+      sparkline = TTY::Sparkline.new(data, height: 5)
       sparkline.render
     }.to perform_allocation(25).objects
   end
