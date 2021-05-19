@@ -26,6 +26,10 @@ Metrics/ClassLength:
 Metrics/MethodLength:
   Max: 20
 
+Naming/FileName:
+  Exclude:
+    - "lib/tty-sparkline.rb"
+
 Style/AccessorGrouping:
   Enabled: false
 
