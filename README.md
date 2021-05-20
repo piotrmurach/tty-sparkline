@@ -22,6 +22,8 @@
 
 **TTY::Sparkline** provides sparkline drawing component for [TTY](https://github.com/piotrmurach/tty) toolkit.
 
+![tty-sparkline](https://github.com/piotrmurach/tty-sparkline/raw/master/assets/tty-sparkline.png)
+
 ## Installation
 
 Add this line to your application's Gemfile:
