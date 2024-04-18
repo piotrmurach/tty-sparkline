@@ -5,14 +5,14 @@
 # TTY::Sparkline
 
 [![Gem Version](https://badge.fury.io/rb/tty-sparkline.svg)][gem]
-[![Actions CI](https://github.com/piotrmurach/tty-sparkline/workflows/CI/badge.svg?branch=master)][gh_actions_ci]
+[![Actions CI](https://github.com/piotrmurach/tty-sparkline/actions/workflows/ci.yml/badge.svg)][gh_actions_ci]
 [![Build status](https://ci.appveyor.com/api/projects/status/3pk69ulk2fs330ja?svg=true)][appveyor]
 [![Maintainability](https://api.codeclimate.com/v1/badges/aade5679e021d0ca5b55/maintainability)][codeclimate]
 [![Coverage Status](https://coveralls.io/repos/github/piotrmurach/tty-sparkline/badge.svg)][coverage]
 [![Inline docs](https://inch-ci.org/github/piotrmurach/tty-sparkline.svg?branch=master)][inchpages]
 
 [gem]: https://badge.fury.io/rb/tty-sparkline
-[gh_actions_ci]: https://github.com/piotrmurach/tty-sparkline/actions?query=workflow%3ACI
+[gh_actions_ci]: https://github.com/piotrmurach/tty-sparkline/actions/workflows/ci.yml
 [appveyor]: https://ci.appveyor.com/project/piotrmurach/tty-sparkline
 [codeclimate]: https://codeclimate.com/github/piotrmurach/tty-sparkline/maintainability
 [coverage]: https://coveralls.io/github/piotrmurach/tty-sparkline
