@@ -3,14 +3,14 @@
 require_relative "lib/tty/sparkline/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "tty-sparkline"
-  spec.version       = TTY::Sparkline::VERSION
-  spec.authors       = ["Piotr Murach"]
-  spec.email         = ["piotr@piotrmurach.com"]
-  spec.summary       = "Sparkline charts for terminal applications."
-  spec.description   = "Sparkline charts for terminal applications."
-  spec.homepage      = "https://ttytoolkit.org"
-  spec.license       = "MIT"
+  spec.name = "tty-sparkline"
+  spec.version = TTY::Sparkline::VERSION
+  spec.authors = ["Piotr Murach"]
+  spec.email = ["piotr@piotrmurach.com"]
+  spec.summary = "Sparkline charts for terminal applications."
+  spec.description = "Sparkline charts for terminal applications."
+  spec.homepage = "https://ttytoolkit.org"
+  spec.license = "MIT"
 
   spec.metadata["allowed_push_host"] = "https://rubygems.org"
   spec.metadata["bug_tracker_uri"] = "https://github.com/piotrmurach/tty-sparkline/issues"
@@ -21,8 +21,8 @@ Gem::Specification.new do |spec|
   spec.metadata["rubygems_mfa_required"] = "true"
   spec.metadata["source_code_uri"] = "https://github.com/piotrmurach/tty-sparkline"
 
-  spec.files         = Dir["lib/**/*"]
-  spec.extra_rdoc_files = ["README.md", "CHANGELOG.md", "LICENSE.txt"]
+  spec.files = Dir["lib/**/*"]
+  spec.extra_rdoc_files = ["CHANGELOG.md", "LICENSE.txt", "README.md"]
   spec.require_paths = ["lib"]
   spec.required_ruby_version = ">= 2.0.0"
 
