@@ -1,6 +1,7 @@
 plugins:
   - rubocop-performance
   - rubocop-rake
+  - rubocop-rspec
 
 AllCops:
   NewCops: enable
@@ -33,6 +34,15 @@ Metrics/MethodLength:
 Naming/FileName:
   Exclude:
     - "lib/tty-sparkline.rb"
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/SpecFilePathFormat:
+  Enabled: false
 
 Style/AccessorGrouping:
   Enabled: false
