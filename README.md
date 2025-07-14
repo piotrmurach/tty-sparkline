@@ -7,13 +7,13 @@
 [![Gem Version](https://badge.fury.io/rb/tty-sparkline.svg)][gem]
 [![Actions CI](https://github.com/piotrmurach/tty-sparkline/actions/workflows/ci.yml/badge.svg)][gh_actions_ci]
 [![Build status](https://ci.appveyor.com/api/projects/status/3pk69ulk2fs330ja?svg=true)][appveyor]
-[![Maintainability](https://api.codeclimate.com/v1/badges/aade5679e021d0ca5b55/maintainability)][codeclimate]
+[![Maintainability](https://qlty.sh/gh/piotrmurach/projects/tty-sparkline/maintainability.svg)][qlty]
 [![Coverage Status](https://coveralls.io/repos/github/piotrmurach/tty-sparkline/badge.svg)][coverage]
 
 [gem]: https://badge.fury.io/rb/tty-sparkline
 [gh_actions_ci]: https://github.com/piotrmurach/tty-sparkline/actions/workflows/ci.yml
 [appveyor]: https://ci.appveyor.com/project/piotrmurach/tty-sparkline
-[codeclimate]: https://codeclimate.com/github/piotrmurach/tty-sparkline/maintainability
+[qlty]: https://qlty.sh/gh/piotrmurach/projects/tty-sparkline
 [coverage]: https://coveralls.io/github/piotrmurach/tty-sparkline
 
 > Sparkline charts for terminal applications.
