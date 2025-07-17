@@ -14,7 +14,7 @@ Layout/FirstArrayElementIndentation:
   Enabled: false
 
 Layout/LineLength:
-  Max: 82
+  Max: 80
 
 Layout/SpaceInsideHashLiteralBraces:
   EnforcedStyle: no_space
